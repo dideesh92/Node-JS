@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; padding: 20px;
+        }
+        input, button {
+            padding: 10px; margin: 5px 0;
+        }
+        button {
+            cursor: pointer;
+        }
+        .recipe { 
+            border: 1px solid #201b1b; padding: 10px; margin-bottom: 10px; width: 450px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Recipe Finder</h1>
+    <div>
+        <section>
+            <h2>Search Recipes</h2>
+            <form id="searchForm">
+                <input type="text" id="ingredient" placeholder="Enter an ingredient">
+                <button type="submit">Search</button>
+            </form>
+            <div id="recipeList"></div>
+        </section>
+        <section>
+            <h2>Favourites</h2>
+            <div id="favoritesList"></div>
+        </section>
+    </div>
+    <script>
+        const recipes = [
+            { name: 'chikenfry', ingredients: ['chicken peices', 'chiken masala', 'eggs','chilli powder','limejuice'], instructions: 'marinate chiken with the ingrediants and fry it.' },
+            { name: 'sambar', ingredients: ['tomatoes', 'potato', 'onions','drumstick','sambar powder'], instructions: 'put all vegetables and sambar powder with water in a cooker allow it to cook for 25minutes' },
+            { name: 'avial', ingredients: ['carrot','chena','tender banana','curd','oil'], instructions: 'cook all the vegitables until it reaches soft to eat and mix with curd for 10 minutes ' },
+        ];
+
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const ingredientInput = document.getElementById('ingredient').value.trim().toLowerCase();
+            const results = ingredientInput === '' ? recipes : recipes.filter(recipe => recipe.ingredients.includes(ingredientInput));
+            displayRecipes(results, 'recipeList');
+        });
+
+        function displayRecipes(recipes, elementId) {
+            const recipeList = document.getElementById(elementId);
+            recipeList.innerHTML = '';
+            recipes.forEach(recipe => {
+                const div = document.createElement('div');
+                div.classList.add('recipe');
+                div.innerHTML = `
+                    <h3>${recipe.name}</h3>
+                    <p>Ingredients: ${recipe.ingredients.join(', ')}</p>
+                    <p>Instructions: ${recipe.instructions}</p>
+                    <button onclick="${elementId === 'favoritesList' ? `removeFromFavorites('${recipe.name}')` : `saveToFavorites('${recipe.name}')`}">
+                        ${elementId === 'favoritesList' ? 'Remove from Favorites' : 'Save to Favorites'}
+                    </button>
+                `;
+                recipeList.appendChild(div);
+            });
+        }
+
+        function saveToFavorites(name) {
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            const recipe = recipes.find(r => r.name === name);
+            if (!favorites.some(fav => fav.name === recipe.name)) {
+                favorites.push(recipe);
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                loadFavorites();
+            }
+        }
+
+        function removeFromFavorites(name) {
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            favorites = favorites.filter(fav => fav.name !== name);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            loadFavorites();
+        }
+
+        function loadFavorites() {
+            const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            displayRecipes(favorites, 'favoritesList');
+        }
+
+        document.addEventListener('DOMContentLoaded', loadFavorites);
+    </script>
+</body>
+</html>
