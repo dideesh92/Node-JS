@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruit Shopping Cart</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background-color: rgb(212, 127, 53); text-align: center;">
+    <div class="container">
+        <h3 style="background-color: rgb(234, 245, 10);"><u>Fruit Shopping Cart</u></h3>
+        <div class="item">
+            <label for="fruit">Select Fruit:</label>
+            <select id="fruit">
+                <option value="apple">Apple</option>
+                <option value="banana">Banana</option>
+                <option value="cherry">Cherry</option>
+                <option value="date">Date</option>
+                <option value="grape">Grape</option>
+                <option value="orange">Orange</option>
+            </select>
+        </div>
+        <div class="item">
+        <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" min="0" step="0.01">
+        </div>
+        <div class="item">
+            <label for="price">Price per kg:</label>
+            <input type="number" id="price" min="0" step="0.01">
+        </div>
+        <div class="item">
+            <br><button onclick="addItem()" style="border-radius: 10px;color: brown;background-color: darkslateblue;">Add to Cart</button>
+        </div>
+        <h4><u>Items in Cart</u></h4>
+        <table id="cart">
+            <tr style="font-size: smal; background-color: rgb(237, 57, 204);">
+                <th>Fruit</th>
+                <th>Weight (kg)</th>
+                <th>Price per kg</th>
+                <th>Cost</th>
+            </tr>
+        </table>
+        <h3 id="grandTotal" style="font-size: medium; background-color: rgb(255, 230, 0);">Grand Total: 0</h3>
+    </div>
+    <script src="shopping.js"></script>
+</body>
+</html>
